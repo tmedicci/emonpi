@@ -8,7 +8,7 @@
 # Mount /var/lib/openhab2 if folder exists
 if [ -d /var/lib/openhab2 ]; then
    echo "mounting /var/lib/openhab2"
-   sudo mount -t tmpfs -o nodev,nosuid,size=40M,mode=1777 tempfs /var/lib/openhab2
+   sudo mount -t tmpfs -o nodev,nosuid,size=40M,mode=1777 tmpfs /var/lib/openhab2
 fi
 
 
