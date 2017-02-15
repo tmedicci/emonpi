@@ -5,6 +5,13 @@
 
 /usr/bin/printf " My IP address is\033[0;31m `/sbin/ifconfig | grep "inet addr" | grep -v "127.0.0.1" | awk '{ print $2 }' | awk -F: '{ print $2 }'` \033[0m\n"
 
+# Mount /var/lib/openhab2 if folder exists
+if [ -d /var/lib/openhab2 ]; then
+   echo "mounting /var/lib/openhab2"
+   sudo mount -t tmpfs -o nodev,nosuid,size=40M,mode=1777 tempfs /var/lib/openhab2
+fi
+
+
 # Will only run if /var/log is mounted in tmpfs
 if ( mount | grep "on /var/log "| grep -q "^tmpfs " )
 then
