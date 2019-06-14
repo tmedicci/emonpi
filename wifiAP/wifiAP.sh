@@ -26,24 +26,23 @@ fi
 
 if [ "$1" = "start" ]; then
   echo "Starting AP.....please wait process could take about 10-20s"
-  echo "Wifi connection will now be lost...wait 30s then connect to SSID 'emonPi' SSID with password 'emonpi2016' then browse to http://192.168.42.1"
   sudo ifdown wlan0
   # sleep 4
   sudo ifconfig wlan0 down
   
-  # if eth1 exists and is up then bridge to wlan0
-  FOUND=`grep "eth1" /proc/net/dev`
+  # if eth0 exists and is up then bridge to wlan0
+  FOUND=`grep "eth0" /proc/net/dev`
   if  [ -n "$FOUND" ] ; then
-    echo "eth1 up"
-    echo "Bridge eth1 (GSM dongle) to WiFi AP"
+    echo "eth0 up"
+    echo "Bridge eth0 to WiFi AP"
     # Remove bridge routes if exist to avoid duplicates 
-    sudo iptables -t nat -D POSTROUTING -o eth1 -j MASQUERADE >/dev/null 2>&1
-    sudo iptables -D FORWARD -i eth1 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT >/dev/null 2>&1
-    sudo iptables -D FORWARD -i wlan0 -o eth1 -j ACCEPT >/dev/null 2>&1
+    sudo iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE >/dev/null 2>&1
+    sudo iptables -D FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT >/dev/null 2>&1
+    sudo iptables -D FORWARD -i wlan0 -o eth0 -j ACCEPT >/dev/null 2>&1
     # Add bridge nodes          
-    sudo iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
-    sudo iptables -A FORWARD -i eth1 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-    sudo iptables -A FORWARD -i wlan0 -o eth1 -j ACCEPT
+    sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
   fi
     
   # sleep 5

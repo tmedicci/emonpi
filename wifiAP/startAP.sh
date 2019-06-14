@@ -9,7 +9,8 @@ then
     echo "Ethernet eth0 up" 
     eth0ip=$(ip addr show eth0 | grep -Po 'inet \K[\d.]+')
     echo "IP Address: $eth0ip"
-elif [[ $wlanstatus -eq 1 ]]
+fi
+if [[ $wlanstatus -eq 1 ]]
 then
     echo "WIFI wlan0 up" 
     wlan0ip=$(ip addr show wlan0 | grep -Po 'inet \K[\d.]+')
